@@ -12,7 +12,7 @@ export default function MainCarousel() {
         items={items}
         disableButtonsControls
         autoPlay
-        autoPlayInterval={2000}
+        autoPlayInterval={2500}
         infinite
     />
     )

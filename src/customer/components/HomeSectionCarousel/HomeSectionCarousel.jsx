@@ -5,12 +5,15 @@ import HomeSectionCard from "../HomeSectionCard/HomeSectionCard";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import { Button } from "@mui/material";
 
-const HomeSectionCarousel = () => {
+
+const HomeSectionCarousel = ({data,sectionName}) => {
+  console.log(data)
   const[activeIndex,setActiveIndex]=useState(0);
 
   const responsive = {
     0: { items: 1 },
     720: { items: 3 },
+
     1024: { items: 5.5 },
   };
   
@@ -18,19 +21,19 @@ const HomeSectionCarousel = () => {
   const slideNext=()=>setActiveIndex(activeIndex+1);
 
   const syncActiveIndex=({item})=>setActiveIndex(item);
-  const items = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((item) => <HomeSectionCard />);
+  const items = data.map((item) => <HomeSectionCard product={item}/>);
   const maxIndex = items.length - responsive[1024].items;
 
   return (
     <div className="w-full px-4 lg:px-8 border">
+      <h2 className="text-2xl font-extrabold text-gray-800 text-left font-serif italic">{sectionName}</h2>
       <div className="relative p-5">
         <AliceCarousel
           items={items}
           disableButtonsControls
-          infinite
           responsive={responsive}
           disableDotsControls
-          onSlideChange={syncActiveIndex}
+          onSlideChanged={syncActiveIndex}
           activeIndex={activeIndex}
         />
         {activeIndex < maxIndex && <Button
