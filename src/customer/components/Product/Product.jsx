@@ -19,7 +19,7 @@ import {
 import { mensKutra } from "../Data/mens_kurta";
 import ProductCard from "./ProductCard";
 import { filters, singleFilter } from "./FilterData";
-import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterListIcon from "@mui/icons-material/FilterList";
 import { useLocation, useNavigate } from "react-router-dom";
 const sortOptions = [
   { name: "Price: Low to High", href: "#", current: false },
@@ -32,36 +32,33 @@ function classNames(...classes) {
 
 export default function Product() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const location=useLocation();
-  const navigate=useNavigate();
+  const location = useLocation();
+  const navigate = useNavigate();
   //for multiple select
-  const handleFilter=(value,sectionId)=>{
-    const searchParams=new URLSearchParams(location.search)
-    let filterValue=searchParams.getAll(sectionId);
-    if(filterValue.length>0 && filterValue[0].split(",").includes(value)){
-        filterValue=filterValue[0].split(",").filter((item)=>item!==value);
-        if(filterValue.length===0){
-            searchParams.delete(sectionId)
-        }
+  const handleFilter = (value, sectionId) => {
+    const searchParams = new URLSearchParams(location.search);
+    let filterValue = searchParams.getAll(sectionId);
+    if (filterValue.length > 0 && filterValue[0].split(",").includes(value)) {
+      filterValue = filterValue[0].split(",").filter((item) => item !== value);
+      if (filterValue.length === 0) {
+        searchParams.delete(sectionId);
+      }
+    } else {
+      filterValue.push(value);
     }
-    else{
-        filterValue.push(value)
+    if (filterValue.length > 0) {
+      searchParams.set(sectionId, filterValue.join(","));
     }
-    if(filterValue.length>0){
-      searchParams.set(sectionId, filterValue.join(","))
-    }
-    const query=searchParams.toString();
-        navigate({search:`?${query}`})
-  }
-  
-  
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  };
+
   const handleRadioFilterChange = (e, sectionId) => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set(sectionId, e.target.value);
     const query = searchParams.toString();
     navigate(`?${query}`);
   };
-
 
   return (
     <div className="bg-white">
@@ -309,8 +306,10 @@ export default function Product() {
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
               <div>
                 <div className="flex justify-between items-center py-10">
-                    <h1 className="text-lg opacity-50 font-bold text-left">Filters</h1>
-                    <FilterListIcon/>
+                  <h1 className="text-lg opacity-50 font-bold text-left">
+                    Filters
+                  </h1>
+                  <FilterListIcon />
                 </div>
                 <form className="hidden lg:block">
                   {filters.map((section) => (
@@ -349,7 +348,9 @@ export default function Product() {
                                   className="flex items-center"
                                 >
                                   <input
-                                    onChange={()=>handleFilter(option.value,section.id)}
+                                    onChange={() =>
+                                      handleFilter(option.value, section.id)
+                                    }
                                     id={`filter-${section.id}-${optionIdx}`}
                                     name={`${section.id}[]`}
                                     defaultValue={option.value}
@@ -410,7 +411,9 @@ export default function Product() {
                                 >
                                   {section.options.map((option, optionIdx) => (
                                     <FormControlLabel
-                                     onChange={(e)=>handleRadioFilterChange(e,section.id)}
+                                      onChange={(e) =>
+                                        handleRadioFilterChange(e, section.id)
+                                      }
                                       key={option.value}
                                       value={option.value}
                                       control={<Radio />}
